@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>Estufa</title>
+</head>
+
+<body>
+
+    <div id="app">
+
+        <v-app
+            style="background-image: url('/bg.png'); background-repeat: no-repeat; background-position: 100% 25%; background-color: #ffffff">
+            <v-main>
+                <v-container class="ml-3">
+                    <span class="text-h4 font-weight-black" style="color:green; white-space: pre-line">ESTUFA
+                        AUTOMATIZADA
+                    </span>
+                </v-container>
+                <!-- UMIDADE -->
+                <v-container class="ml-3">
+                    <div>
+                        <span class="text-h6 font-weight-regular" style="color:rgba(0,0,0,0.7)">Umidade</span>
+                    </div>
+                    <div>
+                        <span class="text-h3 font-weight-bold" style="color:rgba(0,0,0,0.7)">85.4%</span>
+                    </div>
+                </v-container>
+
+                <!--TEMPERATURA-->
+                <v-container class="ml-3">
+                    <div>
+                        <span class="text-h6 font-weight-regular" style="color:rgba(0,0,0,0.7)">Temperatura</span>
+                    </div>
+                    <div>
+                        <span class="text-h3 font-weight-bold" style="color:rgba(0,0,0,0.7)">24.5 ºC</span>
+                    </div>
+                </v-container>
+
+                <!--LUMINOSIDADE-->
+                <v-container class="ml-3">
+                    <div>
+                        <span class="text-h6 font-weight-regular" style="color:rgba(0,0,0,0.7)">Luminosidade</span>
+                    </div>
+                    <div>
+                        <span class="text-h3 font-weight-bold" style="color:rgba(0,0,0,0.7)">60%</span>
+                    </div>
+                </v-container>
+
+                <v-container>
+                    <template>
+                        <v-tabs slider-color="green" color="green">
+                            <v-tab>CONTROLE</v-tab>
+                        </v-tabs>
+                    </template>
+                </v-container>
+
+            </v-main>
+        </v-app>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+        })
+    </script>
+</body>
+
+</html>
