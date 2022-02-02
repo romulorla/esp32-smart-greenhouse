@@ -6,6 +6,8 @@ import upip
 import picoweb
 import network
 import wifiConnect
+import random
+
 sw = mySwitch(22)
 led = machine.Pin(13, machine.Pin.OUT)
 btn_press_counter = 0
@@ -29,13 +31,15 @@ app = picoweb.WebApp(__name__)
 
 @ app.route("/")
 def index(req, resp):
-    yield from app.sendfile(resp, 'main.html')
+    yield from app.sendfile(resp, '/assets/main.html')
 
 
 @ app.route('/leituras')
-def counter(req, resp):
-    reading = {'umidade': 60.4, 'temperatura': 25}
-    yield from picoweb.jsonify(resp, {reading})
+def leituras(req, resp):
+    random.seed(8)
+    numero = random.randrange(0, 30)
+    leituras = {"temperatura": numero, "umidade": 60}
+    yield from picoweb.jsonify(resp, leituras)
 
 
 app.run(host='192.168.0.105', debug=True)

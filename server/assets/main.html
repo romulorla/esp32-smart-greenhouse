@@ -39,7 +39,7 @@
                     </div>
                     <div>
                         <span class="text-h3 font-weight-bold" style="color:rgba(0,0,0,0.7)">{{temperatura}}
-                            ºC</span>
+                            C</span>
                     </div>
                 </v-container>
 
@@ -90,7 +90,8 @@
 
             methods: {
                 sincronizarComServidor: function () {
-                    this.temperatura = Math.floor(Math.random() * (35 - 0) + 0)
+                    return fetch('leituras').then(res => res.json()).then(res => this.temperatura = res.temperatura)
+
                 }
             }
         })
