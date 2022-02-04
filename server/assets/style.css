@@ -1,0 +1,15 @@
+#main{
+    background-image: url('https://i.ibb.co/mG0FkmK/bg.png');
+    background-repeat: no-repeat;
+    background-position: 100% 25%;
+    background-color: #ffffff;
+}
+
+#titulo{
+    color:green;
+    white-space: pre-line
+}
+
+#titulo-dados{
+    color:rgba(0,0,0,0.7)
+}

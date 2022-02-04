@@ -5,6 +5,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <title>Estufa</title>
@@ -13,32 +14,30 @@
 <body>
 
     <div id="app">
-
-        <v-app
-            style="background-image: url('https://i.ibb.co/mG0FkmK/bg.png'); background-repeat: no-repeat; background-position: 100% 25%; background-color: #ffffff">
+        <v-app id="main">
             <v-main>
                 <v-container class="ml-3">
-                    <span class="text-h4 font-weight-black" style="color:green; white-space: pre-line">ESTUFA
+                    <span class="text-h4 font-weight-black" id="titulo">ESTUFA
                         AUTOMATIZADA
                     </span>
                 </v-container>
                 <!-- UMIDADE -->
                 <v-container class="ml-3">
                     <div>
-                        <span class="text-h6 font-weight-regular" style="color:rgba(0,0,0,0.7)">Umidade</span>
+                        <span class="text-h6 font-weight-regular" id="titulo-dados">Umidade</span>
                     </div>
                     <div>
-                        <span class="text-h3 font-weight-bold" style="color:rgba(0,0,0,0.7)">85.4%</span>
+                        <span class="text-h3 font-weight-bold" id="titulo-dados">85.4%</span>
                     </div>
                 </v-container>
 
                 <!--TEMPERATURA-->
                 <v-container class="ml-3">
                     <div>
-                        <span class="text-h6 font-weight-regular" style="color:rgba(0,0,0,0.7)">Temperatura</span>
+                        <span class="text-h6 font-weight-regular" id="titulo-dados">Temperatura</span>
                     </div>
                     <div>
-                        <span class="text-h3 font-weight-bold" style="color:rgba(0,0,0,0.7)">{{temperatura}}
+                        <span class="text-h3 font-weight-bold" id="titulo-dados">{{temperatura}}
                             C</span>
                     </div>
                 </v-container>
@@ -46,10 +45,10 @@
                 <!--LUMINOSIDADE-->
                 <v-container class="ml-3">
                     <div>
-                        <span class="text-h6 font-weight-regular" style="color:rgba(0,0,0,0.7)">Luminosidade</span>
+                        <span class="text-h6 font-weight-regular" id="titulo-dados">Luminosidade</span>
                     </div>
                     <div>
-                        <span class="text-h3 font-weight-bold" style="color:rgba(0,0,0,0.7)">60%</span>
+                        <span class="text-h3 font-weight-bold" id="titulo-dados">60%</span>
                     </div>
                 </v-container>
 
