@@ -6,7 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Estufa</title>
 </head>
 
@@ -73,7 +73,9 @@
                         </v-tabs>
                     </template>
                     <v-container>
-                        <v-switch inset label="Bomba D'Água" color="success"></v-switch>
+                        <v-switch v-model="estadoBomba" v-on:change="leituraEstadoBomba" inset label="Bomba D'Água"
+                            color="success"></v-switch>
+                        <p>{{estadoBomba}}</p>
                         <v-switch inset label="Iluminação" color="success"></v-switch>
                         <v-switch inset label="Ventilação" color="success"></v-switch>
                     </v-container>
@@ -95,13 +97,17 @@
                 temperatura: 'loading',
                 umidade: 'loading',
                 luminosidade: 'loading',
+                estadoBomba: 'false',
                 data: null,
                 message: ''
             },
 
             mounted() {
                 this.interval = setInterval(() => this.sincronizarComServidor(), 3600)
+                this.interval2 = setInterval(() => this.leituraEstadoBomba(), 1200)
+                //this.estadoBomba = this.leituraEstadoBomba();
             },
+
 
             methods: {
                 sincronizarComServidor: async function () {
@@ -117,8 +123,15 @@
                         this.luminosidade = responseJSON.luminosidade;
                         console.log(this.temperatura)
                     }
+                },
+                leituraEstadoBomba: async function () {
+                    var response = await fetch('/ligabomba')
+                    var leEstadoBomba = await fetch('/estadobomba')
+                    var estadoBombaJSON = leEstadoBomba.json()
+                    this.estadoBomba = estadoBombaJSON.bomba;
+
                 }
-            }
+            },
         })
     </script>
 
