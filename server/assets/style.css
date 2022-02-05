@@ -13,3 +13,7 @@
 #titulo-dados{
     color:rgba(0,0,0,0.7)
 }
+
+#titulo-dados-erro{
+    color:rgba(255, 0, 0, 0.7)
+}

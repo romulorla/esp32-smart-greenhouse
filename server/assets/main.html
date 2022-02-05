@@ -37,8 +37,9 @@
                         <span class="text-h6 font-weight-regular" id="titulo-dados">Temperatura</span>
                     </div>
                     <div>
-                        <span class="text-h3 font-weight-bold" id="titulo-dados">{{temperatura}}
-                            C</span>
+                        <span v-if="temperatura == 'Sem conexão!'" class="text-h5 font-weight-bold"
+                            id="titulo-dados-erro">{{temperatura}}</span>
+                        <span v-else class="text-h3 font-weight-bold" id="titulo-dados">{{temperatura}}</span>
                     </div>
                 </v-container>
 
@@ -88,9 +89,16 @@
             },
 
             methods: {
-                sincronizarComServidor: function () {
-                    return fetch('leituras').then(res => res.json()).then(res => this.temperatura = res.temperatura)
+                sincronizarComServidor: async function () {
+                    var response = await fetch('leituras');
+                    if (!response.ok) {
+                        this.temperatura = 'Sem conexão!';
+                    } else {
 
+                        var responseJSON = await response.json();
+                        this.temperatura = responseJSON;
+                        console.log(this.temperatura)
+                    }
                 }
             }
         })
