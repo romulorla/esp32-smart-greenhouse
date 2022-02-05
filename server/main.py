@@ -38,7 +38,7 @@ def index(req, resp):
 def leituras(req, resp):
     random.seed(8)
     numero = random.randrange(0, 30)
-    leituras = {"temperatura": numero, "umidade": 60}
+    leituras = {"temperatura": numero, "umidade": 60, "luminosidade": 85.4}
     yield from picoweb.jsonify(resp, leituras)
 
 

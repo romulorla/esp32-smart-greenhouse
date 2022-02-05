@@ -5,7 +5,6 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <title>Estufa</title>
@@ -26,8 +25,13 @@
                     <div>
                         <span class="text-h6 font-weight-regular" id="titulo-dados">Umidade</span>
                     </div>
-                    <div>
-                        <span class="text-h3 font-weight-bold" id="titulo-dados">85.4%</span>
+                    <div v-if="umidade == 'Sem conexão!'">
+                        <span class="text-h5 font-weight-bold" id="titulo-dados-erro">{{umidade}}</span>
+                    </div>
+                    <div v-else>
+                        <span v-if="umidade != 'loading'" class="text-h3 font-weight-bold"
+                            id="titulo-dados">{{umidade}}</span>
+                        <v-skeleton-loader v-else type="chip" id="loader"></v-skeleton-loader>
                     </div>
                 </v-container>
 
@@ -36,10 +40,14 @@
                     <div>
                         <span class="text-h6 font-weight-regular" id="titulo-dados">Temperatura</span>
                     </div>
-                    <div>
-                        <span v-if="temperatura == 'Sem conexão!'" class="text-h5 font-weight-bold"
-                            id="titulo-dados-erro">{{temperatura}}</span>
-                        <span v-else class="text-h3 font-weight-bold" id="titulo-dados">{{temperatura}}</span>
+                    <div v-if="temperatura == 'Sem conexão!'">
+                        <span class="text-h5 font-weight-bold" id="titulo-dados-erro">{{temperatura}}</span>
+                    </div>
+                    <div v-else>
+                        <span v-if="temperatura != 'loading'" class="text-h3 font-weight-bold"
+                            id="titulo-dados">{{temperatura}}
+                            ºC</span>
+                        <v-skeleton-loader v-else type="chip" id="loader"></v-skeleton-loader>
                     </div>
                 </v-container>
 
@@ -48,8 +56,13 @@
                     <div>
                         <span class="text-h6 font-weight-regular" id="titulo-dados">Luminosidade</span>
                     </div>
-                    <div>
-                        <span class="text-h3 font-weight-bold" id="titulo-dados">60%</span>
+                    <div v-if="luminosidade == 'Sem conexão!'">
+                        <span class="text-h5 font-weight-bold" id="titulo-dados-erro">{{luminosidade}}</span>
+                    </div>
+                    <div v-else>
+                        <span v-if="luminosidade != 'loading'" class="text-h3 font-weight-bold"
+                            id="titulo-dados">{{luminosidade}}%</span>
+                        <v-skeleton-loader v-else type="chip" id="loader"></v-skeleton-loader>
                     </div>
                 </v-container>
 
@@ -79,7 +92,9 @@
             vuetify: new Vuetify(),
 
             data: {
-                temperatura: '',
+                temperatura: 'loading',
+                umidade: 'loading',
+                luminosidade: 'loading',
                 data: null,
                 message: ''
             },
@@ -93,16 +108,45 @@
                     var response = await fetch('leituras');
                     if (!response.ok) {
                         this.temperatura = 'Sem conexão!';
+                        this.umidade = 'Sem conexão!'
+                        this.luminosidade = 'Sem conexão!'
                     } else {
-
                         var responseJSON = await response.json();
-                        this.temperatura = responseJSON;
+                        this.temperatura = responseJSON.temperatura;
+                        this.umidade = responseJSON.umidade;
+                        this.luminosidade = responseJSON.luminosidade;
                         console.log(this.temperatura)
                     }
                 }
             }
         })
     </script>
+
+    <style>
+        #main {
+            background-image: url('https://i.ibb.co/mG0FkmK/bg.png');
+            background-repeat: no-repeat;
+            background-position: 100% 25%;
+            background-color: #ffffff;
+        }
+
+        #titulo {
+            color: green;
+            white-space: pre-line
+        }
+
+        #titulo-dados {
+            color: rgba(0, 0, 0, 0.7)
+        }
+
+        #titulo-dados-erro {
+            color: rgba(255, 0, 0, 0.7)
+        }
+
+        #loader {
+            min-height: 50px;
+        }
+    </style>
 </body>
 
 </html>
