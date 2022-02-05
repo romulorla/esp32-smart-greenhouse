@@ -62,6 +62,7 @@ def desligabomba(req, resp):
 @app.route('/estadobomba')
 def estadobomba(req, resp):
     global estadoBomba
+    print(estadoBomba)
     yield from picoweb.jsonify(resp, {'bomba': estadoBomba})
 
 

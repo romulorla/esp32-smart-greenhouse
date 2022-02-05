@@ -73,9 +73,8 @@
                         </v-tabs>
                     </template>
                     <v-container>
-                        <v-switch v-model="estadoBomba" v-on:change="leituraEstadoBomba" inset label="Bomba D'Água"
+                        <v-switch v-model="estadoBomba" v-on:change="ligaBomba" inset label="Bomba D'Água"
                             color="success"></v-switch>
-                        <p>{{estadoBomba}}</p>
                         <v-switch inset label="Iluminação" color="success"></v-switch>
                         <v-switch inset label="Ventilação" color="success"></v-switch>
                     </v-container>
@@ -104,7 +103,7 @@
 
             mounted() {
                 this.interval = setInterval(() => this.sincronizarComServidor(), 3600)
-                this.interval2 = setInterval(() => this.leituraEstadoBomba(), 1200)
+                this.leituraEstadoBomba();
                 //this.estadoBomba = this.leituraEstadoBomba();
             },
 
@@ -125,11 +124,23 @@
                     }
                 },
                 leituraEstadoBomba: async function () {
-                    var response = await fetch('/ligabomba')
                     var leEstadoBomba = await fetch('/estadobomba')
-                    var estadoBombaJSON = leEstadoBomba.json()
+                    var estadoBombaJSON = await leEstadoBomba.json()
                     this.estadoBomba = estadoBombaJSON.bomba;
-
+                    console.log(estadoBombaJSON)
+                },
+                ligaBomba: async function () {
+                    if (this.estadoBomba == false) {
+                        var response = await fetch('/desligabomba');
+                        var responseJSON = await response.json();
+                        console.log(responseJSON);
+                        this.leituraEstadoBomba();
+                    } else {
+                        var response = await fetch('/ligabomba');
+                        var responseJSON = await response.json();
+                        console.log(responseJSON)
+                        this.leituraEstadoBomba();
+                    }
                 }
             },
         })
