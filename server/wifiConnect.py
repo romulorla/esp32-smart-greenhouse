@@ -2,8 +2,8 @@ import network
 
 
 def connect():
-    ssid = 'AP'
-    password = '93550442'
+    ssid = 'GARAGEM (2.4GHz)'
+    password = 'joaovitorlindo'
     station = network.WLAN(network.STA_IF)
 
     if station.isconnected() == True:

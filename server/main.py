@@ -1,33 +1,19 @@
-from MyKitSwitch import mySwitch
-import time
 import json
 import machine
+from machine import UART
 import upip
 import picoweb
 import network
+import uasyncio as asyncio
+
 import wifiConnect
 import random
 
-sw = mySwitch(22)
 led = machine.Pin(13, machine.Pin.OUT)
-btn_press_counter = 0
-estadoBomba = False
-wifiConnect.connect()
-
-
-def debounce(pin):
-    global btn_press_counter
-    if sw.pressReleased():
-        btn_press_counter += 1
-        print(btn_press_counter)
-        time.sleep_ms(100)
-
-
-p22 = machine.Pin(22, machine.Pin.IN, machine.Pin.PULL_UP)
-led = machine.Pin(2, machine.Pin.OUT)
-p22.irq(trigger=machine.Pin.IRQ_FALLING, handler=debounce)
-
 app = picoweb.WebApp(__name__)
+wifiConnect.connect()
+station = network.WLAN(network.STA_IF)
+uart = UART(2, baudrate=9600, rx=16, tx=17, timeout=10)
 
 
 @ app.route("/")
@@ -38,32 +24,22 @@ def index(req, resp):
 @ app.route('/leituras')
 def leituras(req, resp):
     random.seed(8)
-    numero = random.randrange(0, 30)
-    leituras = {"temperatura": numero, "umidade": 60, "luminosidade": 85.4}
+    leituras = json_data
     yield from picoweb.jsonify(resp, leituras)
 
 
-@app.route('/ligabomba')
-def ligabomba(req, resp):
-    yield from picoweb.jsonify(resp, {'bomba': True})
-    led.value(1)
-    global estadoBomba
-    estadoBomba = True
+async def read_arduino_data():
+    while True:
+        await asyncio.sleep(1)
+        try:
+            received_data = uart.read().decode('utf-8')
+            global json_data
+            json_data = json.loads(received_data)
+            print(json_data)
+        except:
+            print('no data received')
 
 
-@app.route('/desligabomba')
-def desligabomba(req, resp):
-    yield from picoweb.jsonify(resp, {'bomba': False})
-    led.value(0)
-    global estadoBomba
-    estadoBomba = False
-
-
-@app.route('/estadobomba')
-def estadobomba(req, resp):
-    global estadoBomba
-    print(estadoBomba)
-    yield from picoweb.jsonify(resp, {'bomba': estadoBomba})
-
-
-app.run(host='192.168.0.105', debug=True)
+asyncio.create_task(read_arduino_data())
+ip = str(station.ifconfig()[0])
+app.run(host='{0}'.format(ip), debug=-1)
