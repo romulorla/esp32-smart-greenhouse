@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Estufa</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <v-app id="main">
+            <v-main>
+                <v-container class="ml-3">
+                    <span class="text-h4 font-weight-black" id="titulo">ESTUFA
+                        AUTOMATIZADA
+                    </span>
+                </v-container>
+                <!-- UMIDADE -->
+                <v-container class="ml-3">
+                    <div>
+                        <span class="text-h6 font-weight-regular" id="titulo-dados">Umidade</span>
+                    </div>
+                    <div v-if="umidade == 'Sem conexão!'">
+                        <span class="text-h5 font-weight-bold" id="titulo-dados-erro">{{umidade}}</span>
+                    </div>
+                    <div v-else>
+                        <span v-if="umidade != 'loading'" class="text-h3 font-weight-bold"
+                            id="titulo-dados">{{umidade}}</span>
+                        <v-skeleton-loader v-else type="chip" id="loader"></v-skeleton-loader>
+                    </div>
+                </v-container>
+
+                <!--TEMPERATURA-->
+                <v-container class="ml-3">
+                    <div>
+                        <span class="text-h6 font-weight-regular" id="titulo-dados">Temperatura</span>
+                    </div>
+                    <div v-if="temperatura == 'Sem conexão!'">
+                        <span class="text-h5 font-weight-bold" id="titulo-dados-erro">{{temperatura}}</span>
+                    </div>
+                    <div v-else>
+                        <span v-if="temperatura != 'loading'" class="text-h3 font-weight-bold"
+                            id="titulo-dados">{{temperatura}}
+                            ºC</span>
+                        <v-skeleton-loader v-else type="chip" id="loader"></v-skeleton-loader>
+                    </div>
+                </v-container>
+
+                <!--LUMINOSIDADE-->
+                <v-container class="ml-3">
+                    <div>
+                        <span class="text-h6 font-weight-regular" id="titulo-dados">Luminosidade</span>
+                    </div>
+                    <div v-if="luminosidade == 'Sem conexão!'">
+                        <span class="text-h5 font-weight-bold" id="titulo-dados-erro">{{luminosidade}}</span>
+                    </div>
+                    <div v-else>
+                        <span v-if="luminosidade != 'loading'" class="text-h3 font-weight-bold"
+                            id="titulo-dados">{{luminosidade}}%</span>
+                        <v-skeleton-loader v-else type="chip" id="loader"></v-skeleton-loader>
+                    </div>
+                </v-container>
+
+                <v-container>
+                    <template>
+                        <v-tabs slider-color="green" color="green">
+                            <v-tab>CONTROLE</v-tab>
+                        </v-tabs>
+                    </template>
+                    <v-container>
+                        <v-switch inset label="Bomba D'Água" color="success"></v-switch>
+                        <v-switch inset label="Iluminação" color="success"></v-switch>
+                        <v-switch inset label="Ventilação" color="success"></v-switch>
+                    </v-container>
+                </v-container>
+            </v-main>
+        </v-app>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+
+            data: {
+                temperatura: 'loading',
+                umidade: 'loading',
+                luminosidade: 'loading',
+                data: null,
+                message: ''
+            },
+
+            mounted() {
+                this.interval = setInterval(() => this.sincronizarComServidor(), 3600)
+            },
+
+            methods: {
+                sincronizarComServidor: async function () {
+                    var response = await fetch('leituras');
+                    if (!response.ok) {
+                        this.temperatura = 'Sem conexão!';
+                        this.umidade = 'Sem conexão!'
+                        this.luminosidade = 'Sem conexão!'
+                    } else {
+                        var responseJSON = await response.json();
+                        this.temperatura = responseJSON.temperatura;
+                        this.umidade = responseJSON.umidade;
+                        this.luminosidade = responseJSON.luminosidade;
+                        console.log(this.temperatura)
+                    }
+                }
+            }
+        })
+    </script>
+
+    <style>
+        #main {
+            background-image: url('https://i.ibb.co/mG0FkmK/bg.png');
+            background-repeat: no-repeat;
+            background-position: 100% 25%;
+            background-color: #ffffff;
+        }
+
+        #titulo {
+            color: green;
+            white-space: pre-line
+        }
+
+        #titulo-dados {
+            color: rgba(0, 0, 0, 0.7)
+        }
+
+        #titulo-dados-erro {
+            color: rgba(255, 0, 0, 0.7);
+            min-height: 50px;
+        }
+
+        #loader {
+            min-height: 50px;
+        }
+    </style>
+</body>
+
+</html>
