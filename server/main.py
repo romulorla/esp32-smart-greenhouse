@@ -23,7 +23,6 @@ def index(req, resp):
 
 @ app.route('/leituras')
 def leituras(req, resp):
-    random.seed(8)
     leituras = json_data
     yield from picoweb.jsonify(resp, leituras)
 
